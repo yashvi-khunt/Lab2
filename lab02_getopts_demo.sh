@@ -5,41 +5,21 @@ do
     case "$opt" in
       (h)
         shift $((OPTIND - 1)) 
-        if [[ $# -eq 0 ]]; then
-          echo help    
-        else
-          echo "help: unexpected $*"
-        fi
-        exit;;
+         [[ $# -eq 0 ]] && echo help || echo "help: unexpected $*"
+         exit;;
       (l)
         shift $((OPTIND - 1)) 
-        if [[ $# -eq 0 ]]; then
-          echo list    
-        else
-          echo "list: unexpected $*"
-        fi
-        exit;;
+         [[ $# -eq 0 ]] && echo list || echo "list: unexpected $*" 
+         exit;;
       (p)
         shift $((OPTIND - 1)) 
-        if [[ $# -eq 0 ]]; then
-          echo purge   
-        else
-          echo "purge: unexpected $*"
-        fi
-        exit;;
+         [[ $# -eq 0 ]] && echo purge || echo "purge: unexpected $*" 
+         exit;;
       (\?)
          shift $((OPTIND - 1)) 
-        if [[ $# -eq 0 ]]; then
-          echo unknown    
-        else
-          echo "unknown: unexpected $*"
-        fi
+         [[ $# -eq 0 ]] && echo unknown || echo "unknown: unexpected $*" 
         exit;;
       esac
 done
 
-if [[ $# -eq 0 ]]; then
-  echo "help"
-else
-  echo "junk: $*"
-fi
+[[ $# -eq 0 ]] && echo help || echo "junk: $*"
