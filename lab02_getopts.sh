@@ -20,6 +20,7 @@ do
          ;;
       (\?)
          mode="?"
+          ((opt_count++))
          ;;
       esac
 done                    #set the mode based on the option passed
