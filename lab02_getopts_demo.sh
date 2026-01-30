@@ -1,25 +1,61 @@
 #!/bin/bash
 
+mode=""
+opt_count=0
+
 while getopts ":hlp" opt
 do
     case "$opt" in
       (h)
-        shift $((OPTIND - 1)) 
-         [[ $# -eq 0 ]] && echo help || echo "help: unexpected $*"
-         exit;;
+        mode="h" 
+          ((opt_count++))
+         ;;
       (l)
-        shift $((OPTIND - 1)) 
-         [[ $# -eq 0 ]] && echo list || echo "list: unexpected $*" 
-         exit;;
+        mode="l" 
+          ((opt_count++))
+         ;;
       (p)
-        shift $((OPTIND - 1)) 
-         [[ $# -eq 0 ]] && echo purge || echo "purge: unexpected $*" 
-         exit;;
+        mode="p" 
+          ((opt_count++))
+         ;;
       (\?)
-         shift $((OPTIND - 1)) 
-         [[ $# -eq 0 ]] && echo unknown || echo "unknown: unexpected $*" 
-        exit;;
+         mode="?"
+         ;;
       esac
-done
+done                    #set the mode based on the option passed
 
-[[ $# -eq 0 ]] && echo help || echo "junk: $*"
+shift $((OPTIND -1))    #shift the processed options away
+
+# Check for duplicate options
+if [[ $opt_count -gt 1 ]]; then
+  [[ $# -eq 0 ]] && echo duplicate || echo "duplicate: unexpected $*"
+  exit
+fi
+
+# Execute based on mode
+case "$mode" in
+  (h)
+     [[ $# -eq 0 ]] && echo help || echo "help: unexpected $*" 
+     exit
+     ;;
+  (l)
+    [[ $# -eq 0 ]] && echo list || echo "list: unexpected $*" 
+    exit
+    ;;
+  (p)
+    [[ $# -eq 0 ]] && echo purge || echo "purge: unexpected $*"
+    exit
+    ;;
+  (?)
+    [[ $# -eq 0 ]] && echo unknown || echo "unknown: unexpected $*"
+    exit
+    ;;
+esac
+
+
+# Handle case with no options but possible arguments
+if [[ $# -eq 0 ]]; then
+  echo help
+else
+  echo "junk: $*"
+fi
